@@ -61,9 +61,12 @@
   merge=salt['pillar.get']('chrony:config'))
 %}
 
-{# Debian distros check timedatectl status to determine UTC setting #}
-{% if grains['os_family'] == "Debian" %}
-  {% if salt['cmd.shell']('timedatectl status | grep "RTC in local TZ: yes"') %}
-    {% do chrony['otherparams'].remove('rtconutc') %}
+{# adjtime's third line records the RTC time standard; absent means UTC. #}
+{% if grains['os_family'] == 'Debian' and 'rtconutc' in chrony.get('otherparams', []) %}
+  {% if salt['file.file_exists']('/etc/adjtime') %}
+    {% set adjtime = salt['file.read']('/etc/adjtime').splitlines() %}
+    {% if adjtime|length > 2 and adjtime[2].strip() == 'LOCAL' %}
+      {% do chrony['otherparams'].remove('rtconutc') %}
+    {% endif %}
   {% endif %}
 {% endif %}

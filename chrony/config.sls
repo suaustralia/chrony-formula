@@ -9,6 +9,8 @@ chrony_config:
     - source: {{ chrony.config_src }}
     - template: jinja
     - user: root
-    - mode: 644
+    - mode: '0644'
+    - require:
+      - pkg: chrony
     - watch_in:
       - service: chrony

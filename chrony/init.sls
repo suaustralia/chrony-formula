@@ -7,4 +7,4 @@ chrony:
     - enable: True
     - name: {{ chrony.service }}
     - require:
-      - pkg: {{ chrony.package }}
+      - pkg: chrony

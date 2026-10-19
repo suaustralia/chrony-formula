@@ -13,7 +13,7 @@ chrony:
     options: iburst
     logdir: /var/log/chrony
     keyfile: /etc/chrony.keys
-    driftfile: /var/lib/chrony/drift,
+    driftfile: /var/lib/chrony/drift
     otherparams: [
                  "rtcsync",
                  "makestep 10 3",
@@ -25,4 +25,3 @@ chrony:
                  "noclientlog",
                  "logchange 0.5",
                   ]
-
